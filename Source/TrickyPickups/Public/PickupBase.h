@@ -41,7 +41,6 @@ protected:
 
 	virtual bool ActivatePickupEffect_Implementation(AActor* TargetActor);
 
-private:
 	UFUNCTION(BlueprintImplementableEvent, Category="Pickup")
 	bool OnPickupEffectActivated(AActor* TargetActor);
 
