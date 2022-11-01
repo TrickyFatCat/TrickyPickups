@@ -35,8 +35,11 @@ public:
 	virtual void EnablePickup();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
-	UEaseAnimationComponent* EaseAnimationComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
+	UEaseAnimationComponent* EaseAnimationComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
+	USceneComponent* RootComponent = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Pickup")
 	bool bDestroyOnActivation = true;

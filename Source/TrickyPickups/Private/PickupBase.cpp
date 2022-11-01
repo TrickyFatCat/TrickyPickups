@@ -10,6 +10,9 @@ APickupBase::APickupBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
+	SetRootComponent(RootComponent);
+
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
 	EaseAnimationComponent->bFollowActor = true;
 	EaseAnimationComponent->SetIsEnabled(false);
