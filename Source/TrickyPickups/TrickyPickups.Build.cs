@@ -39,7 +39,7 @@ public class TrickyPickups : ModuleRules
 				"Slate",
 				"SlateCore",
 				"TrickyInteractionSystem",
-				"TrickyAnimationComponents"
+				"TrickyAnimationComponents",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
