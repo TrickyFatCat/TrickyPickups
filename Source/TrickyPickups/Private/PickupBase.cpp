@@ -10,7 +10,8 @@ APickupBase::APickupBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>("RootComponent"));
+	PickupRootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
+	SetRootComponent(PickupRootComponent);
 
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
 	EaseAnimationComponent->bFollowActor = true;
@@ -45,14 +46,14 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 	}
 
 	TargetActor = OtherActor;
-	
+
 	if (bInterpolateToTarget)
 	{
 		EaseAnimationComponent->TargetActor = TargetActor;
 		EaseAnimationComponent->SetIsEnabled(true);
 		return true;
 	}
-	
+
 	return ActivatePickupEffect();
 }
 
@@ -87,7 +88,7 @@ void APickupBase::DisablePickup()
 		EaseAnimationComponent->SetIsEnabled(false);
 		EaseAnimationComponent->TargetActor = nullptr;
 	}
-	
+
 	OnPickupDisabled();
 }
 

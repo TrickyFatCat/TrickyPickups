@@ -49,6 +49,9 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
+	USceneComponent* PickupRootComponent = nullptr;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
 	UEaseAnimationComponent* EaseAnimationComponent = nullptr;
 
 	/**
