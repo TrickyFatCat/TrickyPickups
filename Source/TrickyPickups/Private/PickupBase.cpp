@@ -3,10 +3,16 @@
 
 #include "PickupBase.h"
 
+#include "EaseAnimationComponent.h"
+
 
 APickupBase::APickupBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
+	EaseAnimationComponent->bFollowActor = true;
+	EaseAnimationComponent->SetIsEnabled(false);
 }
 
 void APickupBase::BeginPlay()
@@ -17,28 +23,35 @@ void APickupBase::BeginPlay()
 void APickupBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bInterpolateToTarget && IsValid(TargetActor) && EaseAnimationComponent->GetIsEnabled())
+	{
+		const float Distance = FVector{GetOwner()->GetActorLocation() - TargetActor->GetActorLocation()}.Size();
+
+		if (Distance <= ActivationDistance)
+		{
+			ActivatePickupEffect();
+		}
+	}
 }
 
-void APickupBase::ActivatePickup(AActor* TargetActor)
+void APickupBase::ActivatePickup(AActor* OtherActor)
 {
 	if (!IsValid(TargetActor))
 	{
 		return;
 	}
 
-	if (ActivatePickupEffect(TargetActor))
+	TargetActor = OtherActor;
+	
+	if (bInterpolateToTarget)
 	{
-		OnPickupEffectActivated(TargetActor);
-		OnPickupActivated.Broadcast();
-
-		if (bDestroyOnActivation)
-		{
-			Destroy();
-		}
-		else
-		{
-			DisablePickup();
-		}
+		EaseAnimationComponent->TargetActor = TargetActor;
+		EaseAnimationComponent->SetIsEnabled(true);
+	}
+	else
+	{
+		ActivatePickupEffect();
 	}
 }
 
@@ -53,7 +66,7 @@ void APickupBase::EnablePickup()
 	SetActorEnableCollision(true);
 }
 
-bool APickupBase::ActivatePickupEffect_Implementation(AActor* TargetActor)
+bool APickupBase::PickupEffect_Implementation(AActor* OtherActor)
 {
 	return true;
 }
@@ -64,9 +77,33 @@ void APickupBase::DisablePickup()
 	{
 		return;
 	}
-	
+
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
+
+	if (bInterpolateToTarget)
+	{
+		EaseAnimationComponent->SetIsEnabled(false);
+		EaseAnimationComponent->TargetActor = nullptr;
+	}
+	
 	OnPickupDisabled();
 }
 
+void APickupBase::ActivatePickupEffect()
+{
+	if (PickupEffect(TargetActor))
+	{
+		OnPickupEffectActivated(TargetActor);
+		OnPickupActivated.Broadcast();
+
+		if (bDestroyOnActivation)
+		{
+			Destroy();
+		}
+		else
+		{
+			DisablePickup();
+		}
+	}
+}

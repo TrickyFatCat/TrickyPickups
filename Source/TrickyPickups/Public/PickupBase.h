@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PickupBase.generated.h"
 
+class UEaseAnimationComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPickupActivatedSignature);
 
 UCLASS()
@@ -27,22 +29,28 @@ public:
 
 	UFUNCTION
 	(BlueprintCallable, Category="Pickup")
-	void ActivatePickup(AActor* TargetActor);
+	void ActivatePickup(AActor* OtherActor);
 
 	UFUNCTION(BlueprintCallable, Category="Pickup")
 	virtual void EnablePickup();
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
+	UEaseAnimationComponent* EaseAnimationComponent;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Pickup")
 	bool bDestroyOnActivation = true;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pickup")
+	bool bInterpolateToTarget = false;
 	
 	UFUNCTION(BlueprintNativeEvent, Category="Pickup")
-	bool ActivatePickupEffect(AActor* TargetActor);
+	bool PickupEffect(AActor* OtherActor);
 
-	virtual bool ActivatePickupEffect_Implementation(AActor* TargetActor);
+	virtual bool PickupEffect_Implementation(AActor* OtherActor);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Pickup")
-	void OnPickupEffectActivated(AActor* TargetActor);
+	void OnPickupEffectActivated(AActor* OtherActor);
 
 	virtual void DisablePickup();
 
@@ -51,4 +59,13 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Pickup")
 	void OnPickupDisabled();
+
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Pickup", meta=(AllowPrivateAccess, EditCondition="bInterpolateToTarget"))
+	float ActivationDistance = 32.f;
+	
+	UPROPERTY()
+	AActor* TargetActor = nullptr;
+	
+	void ActivatePickupEffect();
 };
