@@ -9,7 +9,7 @@
 
 class USphereInteractionTrigger;
 /**
- * 
+ * A pickup which activates by interacting with it. Override the Interact function with parent call to add additional checks and avoid some strange behavior.
  */
 UCLASS()
 class TRICKYPICKUPS_API APickupInteractive : public APickupBase, public IInteractionInterface

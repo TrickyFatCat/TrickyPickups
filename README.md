@@ -46,7 +46,8 @@ A base pickup class which contains the main logic.
 
 #### Variables
 
-1. `DestroyOnActivation` - if true the pickup actor will destroy on activation, else it'll be disabled and hidden in game;
+1. `DestroyOnActivation` - if true the pickup actor will destroy on activation, else it'll be disabled and hidden in
+   game;
 2. `InterpolateToTarget` - if true the actor will be interpolated to the target using EaseAnimationComponent from [**
    TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents);
 3. `ActivationDistance` - determines the distance from the target actor the `ActivatePickup` function will be called.
@@ -72,4 +73,9 @@ A base pickup class which contains the main logic.
 
 ### PickupNormal
 
+A pickup which activates if an actor enters an activation trigger.
+
 ### PickupInteractive
+
+A pickup which activates by interacting with it. Override the `Interact` function to add additional checks and avoid
+some strange behavior.

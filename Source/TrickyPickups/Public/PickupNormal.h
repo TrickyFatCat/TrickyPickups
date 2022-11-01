@@ -9,7 +9,7 @@
 class USphereComponent;
 
 /**
- * 
+ * A pickup which activates if an actor enters an activation trigger.
  */
 UCLASS()
 class TRICKYPICKUPS_API APickupNormal : public APickupBase
