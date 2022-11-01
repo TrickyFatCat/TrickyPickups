@@ -37,11 +37,11 @@ void APickupBase::Tick(float DeltaTime)
 	}
 }
 
-void APickupBase::ActivatePickup(AActor* OtherActor)
+bool APickupBase::ActivatePickup(AActor* OtherActor)
 {
 	if (!IsValid(OtherActor))
 	{
-		return;
+		return false;
 	}
 
 	TargetActor = OtherActor;
@@ -50,11 +50,10 @@ void APickupBase::ActivatePickup(AActor* OtherActor)
 	{
 		EaseAnimationComponent->TargetActor = TargetActor;
 		EaseAnimationComponent->SetIsEnabled(true);
+		return true;
 	}
-	else
-	{
-		ActivatePickupEffect();
-	}
+	
+	return ActivatePickupEffect();
 }
 
 void APickupBase::EnablePickup()
@@ -92,7 +91,7 @@ void APickupBase::DisablePickup()
 	OnPickupDisabled();
 }
 
-void APickupBase::ActivatePickupEffect()
+bool APickupBase::ActivatePickupEffect()
 {
 	if (PickupEffect(TargetActor))
 	{
@@ -107,5 +106,9 @@ void APickupBase::ActivatePickupEffect()
 		{
 			DisablePickup();
 		}
+
+		return true;
 	}
+
+	return false;
 }

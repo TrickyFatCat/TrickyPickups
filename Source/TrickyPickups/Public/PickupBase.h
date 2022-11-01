@@ -29,7 +29,7 @@ public:
 
 	UFUNCTION
 	(BlueprintCallable, Category="Pickup")
-	void ActivatePickup(AActor* OtherActor);
+	bool ActivatePickup(AActor* OtherActor);
 
 	UFUNCTION(BlueprintCallable, Category="Pickup")
 	virtual void EnablePickup();
@@ -67,5 +67,5 @@ private:
 	UPROPERTY()
 	AActor* TargetActor = nullptr;
 	
-	void ActivatePickupEffect();
+	bool ActivatePickupEffect();
 };
