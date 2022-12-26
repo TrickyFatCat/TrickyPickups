@@ -6,8 +6,8 @@ A plugin with different base pickup classes
 
 This plugin required this plugins to work:
 
-1. [**TrickyInteractionSystem**](https://github.com/TrickyFatCat/TrickyInteractionSystem);
-2. [**TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents);
+1. [**TrickyInteractionSystem**](https://github.com/TrickyFatCat/TrickyInteractionSystem/releases) v1.3 and higher;
+2. [**TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents/releases);
 
 Install them before installing this plugin.
 
@@ -19,7 +19,7 @@ The plugin can be used in both C++ and Blueprint projects.
 
 **At the moment, the package is compatible only with Unreal Engine 4.**
 
-1. Download package file;
+1. Download the latest [**package file**](https://github.com/TrickyFatCat/TrickyPickups/releases);
 2. Unzip the package to the Plugins folder in engine folder, e.g. `C:\Program Files\Epic Games\UE_4.27\Engine\Plugins`;
 3. Restart the project;
 
