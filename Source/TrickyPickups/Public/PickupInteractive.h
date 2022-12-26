@@ -8,7 +8,7 @@
 #include "InteractionLibrary.h"
 #include "PickupInteractive.generated.h"
 
-class USphereComponent;
+class USphereInteractionComponent;
 /**
  * A pickup which activates by interacting with it. Override the Interact function with parent call to add additional checks and avoid some strange behavior.
  */
@@ -21,29 +21,25 @@ public:
 	APickupInteractive();
 
 protected:
+	virtual void OnConstruction(const FTransform& Transform) override;
+
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Pickup")
-	FInteractionData InteractionData;
+	UFUNCTION(BlueprintGetter, Category="Pickup")
+	FInteractionData GetInteractionData() const;
+
+	UFUNCTION(BlueprintSetter, Category="Pickup")
+	void SetInteractionData(const FInteractionData& Value);
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
-	USphereComponent* InteractionTriggerComponent = nullptr;
+	USphereInteractionComponent* InteractionTriggerComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter=GetInteractionData, BlueprintSetter=SetInteractionData,
+		Category="Pickup")
+	FInteractionData InteractionData;
 
 private:
 	virtual bool FinishInteraction_Implementation(AActor* OtherActor) override;
-
-	UFUNCTION()
-	void OnInteractionTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
-	                                      AActor* OtherActor,
-	                                      UPrimitiveComponent* OtherComp,
-	                                      int32 OtherBodyIndex,
-	                                      bool bFromSweep,
-	                                      const FHitResult& SweepResult);
-	UFUNCTION()
-	void OnInteractionTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent,
-	                                    AActor* OtherActor,
-	                                    UPrimitiveComponent* OtherComp,
-	                                    int32 OtherBodyIndex);
 };

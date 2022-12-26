@@ -4,54 +4,45 @@
 #include "PickupInteractive.h"
 
 #include "InteractionLibrary.h"
-#include "Components/SphereComponent.h"
+#include "SphereInteractionComponent.h"
 
 APickupInteractive::APickupInteractive()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	InteractionTriggerComponent = CreateDefaultSubobject<USphereComponent>("InteractionTrigger");
+	InteractionTriggerComponent = CreateDefaultSubobject<USphereInteractionComponent>("InteractionTrigger");
 	InteractionTriggerComponent->SetupAttachment(GetRootComponent());
 	UInteractionLibrary::SetTriggerDefaultCollision(InteractionTriggerComponent);
+}
+
+void APickupInteractive::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	if (InteractionTriggerComponent)
+	{
+		InteractionTriggerComponent->SetInteractionData(InteractionData);
+	}
 }
 
 void APickupInteractive::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InteractionTriggerComponent->OnComponentBeginOverlap.AddDynamic(this, &APickupInteractive::OnInteractionTriggerBeginOverlap);
-	InteractionTriggerComponent->OnComponentEndOverlap.AddDynamic(this, &APickupInteractive::OnInteractionTriggerEndOverlap);
+	InteractionTriggerComponent->SetInteractionData(InteractionData);
+}
+
+FInteractionData APickupInteractive::GetInteractionData() const
+{
+	return InteractionData;
+}
+
+void APickupInteractive::SetInteractionData(const FInteractionData& Value)
+{
+	InteractionData = Value;
 }
 
 bool APickupInteractive::FinishInteraction_Implementation(AActor* OtherActor)
 {
 	return ActivatePickup(OtherActor);
-}
-
-void APickupInteractive::OnInteractionTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
-                                                          AActor* OtherActor,
-                                                          UPrimitiveComponent* OtherComp,
-                                                          int32 OtherBodyIndex,
-                                                          bool bFromSweep,
-                                                          const FHitResult& SweepResult)
-{
-	if (!IsValid(OtherActor))
-	{
-		return;
-	}
-
-	UInteractionLibrary::AddToInteractionQueue(OtherActor, this, InteractionData);
-}
-
-void APickupInteractive::OnInteractionTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent,
-                                                        AActor* OtherActor,
-                                                        UPrimitiveComponent* OtherComp,
-                                                        int32 OtherBodyIndex)
-{
-	if (!IsValid(OtherActor))
-	{
-		return;
-	}
-
-	UInteractionLibrary::RemoveFromInteractionQueue(OtherActor, this);
 }
