@@ -21,6 +21,9 @@ APickupBase::APickupBase()
 void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	EaseAnimationComponent->bFollowActor = true;
+	EaseAnimationComponent->SetIsEnabled(false);
 }
 
 void APickupBase::Tick(float DeltaTime)
@@ -49,6 +52,7 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 
 	if (bInterpolateToTarget)
 	{
+		EaseAnimationComponent->bFollowActor = true;
 		EaseAnimationComponent->TargetActor = TargetActor;
 		EaseAnimationComponent->SetIsEnabled(true);
 		return true;
