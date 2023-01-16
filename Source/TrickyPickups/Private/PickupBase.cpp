@@ -14,7 +14,6 @@ APickupBase::APickupBase()
 	SetRootComponent(PickupRootComponent);
 
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
-	EaseAnimationComponent->bFollowActor = true;
 	EaseAnimationComponent->SetIsEnabled(false);
 }
 
@@ -22,7 +21,6 @@ void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	EaseAnimationComponent->bFollowActor = true;
 	EaseAnimationComponent->SetIsEnabled(false);
 }
 
@@ -52,8 +50,7 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->bFollowActor = true;
-		EaseAnimationComponent->TargetActor = TargetActor;
+		EaseAnimationComponent->TargetLocation = OtherActor->GetActorLocation(); 
 		EaseAnimationComponent->SetIsEnabled(true);
 		return true;
 	}
@@ -90,7 +87,6 @@ void APickupBase::DisablePickup()
 	if (bInterpolateToTarget)
 	{
 		EaseAnimationComponent->SetIsEnabled(false);
-		EaseAnimationComponent->TargetActor = nullptr;
 	}
 
 	OnPickupDisabled();
