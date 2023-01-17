@@ -20,7 +20,7 @@ APickupBase::APickupBase()
 void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	EaseAnimationComponent->StopAnimation();
 }
 
@@ -118,12 +118,12 @@ bool APickupBase::ActivatePickupEffect()
 	return false;
 }
 
-void APickupBase::SetAnimationTargetLocation()
+void APickupBase::SetAnimationTargetLocation() const
 {
 	if (!IsValid(TargetActor))
 	{
 		return;
 	}
-	
+
 	EaseAnimationComponent->SetLocation(TargetActor->GetActorLocation());
 }

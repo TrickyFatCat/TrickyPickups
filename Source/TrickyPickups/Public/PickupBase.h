@@ -109,5 +109,5 @@ private:
 
 	bool ActivatePickupEffect();
 
-	void SetAnimationTargetLocation();
+	void SetAnimationTargetLocation() const;
 };
