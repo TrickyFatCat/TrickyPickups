@@ -14,21 +14,21 @@ APickupBase::APickupBase()
 	SetRootComponent(PickupRootComponent);
 
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
-	EaseAnimationComponent->SetIsEnabled(false);
+	EaseAnimationComponent->StopAnimation();
 }
 
 void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	EaseAnimationComponent->SetIsEnabled(false);
+	EaseAnimationComponent->StopAnimation();
 }
 
 void APickupBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bInterpolateToTarget && IsValid(TargetActor) && EaseAnimationComponent->GetIsEnabled())
+	if (bInterpolateToTarget && IsValid(TargetActor) && EaseAnimationComponent->GetIsPlaying())
 	{
 		const float Distance = FVector{GetActorLocation() - TargetActor->GetActorLocation()}.Size();
 
@@ -50,8 +50,8 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->TargetLocation = OtherActor->GetActorLocation(); 
-		EaseAnimationComponent->SetIsEnabled(true);
+		EaseAnimationComponent->Location = OtherActor->GetActorLocation(); 
+		EaseAnimationComponent->StopAnimation();
 		return true;
 	}
 
@@ -86,7 +86,7 @@ void APickupBase::DisablePickup()
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->SetIsEnabled(false);
+		EaseAnimationComponent->StopAnimation();
 	}
 
 	OnPickupDisabled();
