@@ -108,4 +108,6 @@ private:
 	AActor* TargetActor = nullptr;
 
 	bool ActivatePickupEffect();
+
+	void SetAnimationTargetLocation();
 };

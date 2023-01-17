@@ -36,6 +36,10 @@ void APickupBase::Tick(float DeltaTime)
 		{
 			ActivatePickupEffect();
 		}
+		else
+		{
+			SetAnimationTargetLocation();
+		}
 	}
 }
 
@@ -50,8 +54,8 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->Location = OtherActor->GetActorLocation(); 
-		EaseAnimationComponent->StopAnimation();
+		SetAnimationTargetLocation();
+		EaseAnimationComponent->StartAnimation();
 		return true;
 	}
 
@@ -112,4 +116,14 @@ bool APickupBase::ActivatePickupEffect()
 	}
 
 	return false;
+}
+
+void APickupBase::SetAnimationTargetLocation()
+{
+	if (!IsValid(TargetActor))
+	{
+		return;
+	}
+	
+	EaseAnimationComponent->SetLocation(TargetActor->GetActorLocation());
 }
