@@ -13,14 +13,14 @@ APickupBase::APickupBase()
 	SetRootComponent(PickupRootComponent);
 
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
-	EaseAnimationComponent->StopAnimation();
+	EaseAnimationComponent->Stop();
 }
 
 void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	EaseAnimationComponent->StopAnimation();
+	EaseAnimationComponent->Stop();
 }
 
 void APickupBase::Tick(float DeltaTime)
@@ -54,7 +54,7 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 	if (bInterpolateToTarget)
 	{
 		SetAnimationTargetLocation();
-		EaseAnimationComponent->StartAnimation();
+		EaseAnimationComponent->Start();
 		return true;
 	}
 
@@ -89,7 +89,7 @@ void APickupBase::DisablePickup()
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->StopAnimation();
+		EaseAnimationComponent->Stop();
 	}
 
 	OnPickupDisabled();
@@ -124,5 +124,5 @@ void APickupBase::SetAnimationTargetLocation() const
 		return;
 	}
 
-	EaseAnimationComponent->SetLocation(TargetActor->GetActorLocation());
+	EaseAnimationComponent->SetTargetLocation(TargetActor->GetActorLocation());
 }
