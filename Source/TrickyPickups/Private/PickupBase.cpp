@@ -29,9 +29,9 @@ void APickupBase::Tick(float DeltaTime)
 
 	if (bInterpolateToTarget && IsValid(TargetActor) && EaseAnimationComponent->GetIsPlaying())
 	{
-		const float Distance = FVector{GetActorLocation() - TargetActor->GetActorLocation()}.Size();
+		const float Distance = FVector::DistSquared(GetActorLocation(), TargetActor->GetActorLocation());
 
-		if (Distance <= ActivationDistance)
+		if (Distance <= ActivationDistance * ActivationDistance)
 		{
 			ActivatePickupEffect();
 		}
