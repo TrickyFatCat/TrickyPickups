@@ -54,7 +54,7 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 	if (bInterpolateToTarget)
 	{
 		SetAnimationTargetLocation();
-		EaseAnimationComponent->Start();
+		EaseAnimationComponent->PlayFromStart();
 		return true;
 	}
 
