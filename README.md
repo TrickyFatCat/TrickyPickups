@@ -7,14 +7,14 @@ A plugin with different base pickup classes
 This plugin required this plugins to work:
 
 1. [**TrickyInteractionSystem**](https://github.com/TrickyFatCat/TrickyInteractionSystem/releases) v1.3 and higher;
-2. [**TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents/releases);
+2. [**TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents/releases) v1.3 and higher;
 
 Install them before installing this plugin.
 
 ## Installation
 
 The plugin can be used in both C++ and Blueprint projects.
-
+[README.md](README.md)
 ### Blueprint projects
 
 **At the moment, the package is compatible only with Unreal Engine 4.**
