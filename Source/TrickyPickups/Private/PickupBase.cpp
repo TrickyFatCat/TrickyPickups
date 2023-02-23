@@ -3,6 +3,7 @@
 #include "PickupBase.h"
 
 #include "EaseAnimationComponent.h"
+#include "PickupEffectType.h"
 
 
 APickupBase::APickupBase()
@@ -21,6 +22,26 @@ void APickupBase::BeginPlay()
 	Super::BeginPlay();
 
 	EaseAnimationComponent->Stop();
+
+	if (MainEffectType)
+	{
+		MainEffect = NewObject<UPickupEffectType>(this, MainEffectType);
+	}
+
+	if (SecondaryEffectsTypes.Num() > 0)
+	{
+		for (const TSubclassOf<UPickupEffectType>& Effect : SecondaryEffectsTypes)
+		{
+			UPickupEffectType* SecondaryEffect = NewObject<UPickupEffectType>(this, Effect);
+
+			if (!SecondaryEffect)
+			{
+				continue;
+			}
+
+			SecondaryEffects.Emplace(SecondaryEffect);
+		}
+	}
 }
 
 void APickupBase::Tick(float DeltaTime)
@@ -72,11 +93,6 @@ void APickupBase::EnablePickup()
 	SetActorEnableCollision(true);
 }
 
-bool APickupBase::PickupEffect_Implementation(AActor* OtherActor)
-{
-	return true;
-}
-
 void APickupBase::DisablePickup()
 {
 	if (IsHidden())
@@ -97,8 +113,10 @@ void APickupBase::DisablePickup()
 
 bool APickupBase::ActivatePickupEffect()
 {
-	if (PickupEffect(TargetActor))
+	if (ActivateMainEffect())
 	{
+		ActivateSecondaryEffects();
+
 		OnPickupEffectActivated(TargetActor);
 		OnPickupActivated.Broadcast();
 
@@ -125,4 +143,27 @@ void APickupBase::SetAnimationTargetLocation() const
 	}
 
 	EaseAnimationComponent->SetTargetLocation(TargetActor->GetActorLocation());
+}
+
+bool APickupBase::ActivateMainEffect() const
+{
+	if (!IsValid(MainEffect))
+	{
+		return false;
+	}
+
+	return MainEffect->ActivateEffect(TargetActor);
+}
+
+void APickupBase::ActivateSecondaryEffects()
+{
+	for (const auto& Effect : SecondaryEffects)
+	{
+		if (!IsValid(Effect))
+		{
+			continue;
+		}
+
+		Effect->ActivateEffect(TargetActor);
+	}
 }
