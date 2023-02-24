@@ -27,7 +27,7 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnActivationTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	void HandleActivationTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	                                     AActor* OtherActor,
 	                                     UPrimitiveComponent* OtherComp,
 	                                     int32 OtherBodyIndex,

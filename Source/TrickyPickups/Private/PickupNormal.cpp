@@ -20,10 +20,10 @@ void APickupNormal::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ActivationTrigger->OnComponentBeginOverlap.AddDynamic(this, &APickupNormal::OnActivationTriggerBeginOverlap);
+	ActivationTrigger->OnComponentBeginOverlap.AddDynamic(this, &APickupNormal::HandleActivationTriggerBeginOverlap);
 }
 
-void APickupNormal::OnActivationTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+void APickupNormal::HandleActivationTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
                                                     AActor* OtherActor,
                                                     UPrimitiveComponent* OtherComp,
                                                     int32 OtherBodyIndex,
