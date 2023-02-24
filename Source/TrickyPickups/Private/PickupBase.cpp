@@ -2,7 +2,7 @@
 
 #include "PickupBase.h"
 
-#include "EaseAnimationComponent.h"
+#include "FollowAnimationComponent.h"
 #include "PickupEffectsComponent.h"
 
 APickupBase::APickupBase()
@@ -14,8 +14,8 @@ APickupBase::APickupBase()
 
 	PickupEffectsComponent = CreateDefaultSubobject<UPickupEffectsComponent>("PickupEffects");
 
-	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
-	EaseAnimationComponent->Stop();
+	FollowAnimationComponent = CreateDefaultSubobject<UFollowAnimationComponent>("FollowAnimation");
+	FollowAnimationComponent->StopFollowing();
 }
 
 void APickupBase::OnConstruction(const FTransform& Transform)
@@ -27,28 +27,19 @@ void APickupBase::OnConstruction(const FTransform& Transform)
 		PickupEffectsComponent->SetMainEffectType(MainEffectType);
 		PickupEffectsComponent->SetSecondaryEffectsTypes(SecondaryEffectsTypes);
 	}
-
-	if (EaseAnimationComponent)
-	{
-		EaseAnimationComponent->Stop();
-	}
 }
 
 void APickupBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bInterpolateToTarget && IsValid(TargetActor) && EaseAnimationComponent->GetIsPlaying())
+	if (bInterpolateToTarget && IsValid(TargetActor) && FollowAnimationComponent->GetIsFollowing())
 	{
 		const float Distance = FVector::DistSquared(GetActorLocation(), TargetActor->GetActorLocation());
 
 		if (Distance <= ActivationDistance * ActivationDistance)
 		{
 			ActivatePickupEffect();
-		}
-		else
-		{
-			SetAnimationTargetLocation();
 		}
 	}
 }
@@ -64,8 +55,10 @@ bool APickupBase::ActivatePickup(AActor* OtherActor)
 
 	if (bInterpolateToTarget)
 	{
-		SetAnimationTargetLocation();
-		EaseAnimationComponent->PlayFromStart();
+		FollowAnimationComponent->bFollowActor = true;
+		FollowAnimationComponent->TargetActor = TargetActor;
+		FollowAnimationComponent->StartFollowing();
+		
 		return true;
 	}
 
@@ -95,7 +88,7 @@ void APickupBase::DisablePickup()
 
 	if (bInterpolateToTarget)
 	{
-		EaseAnimationComponent->Stop();
+		FollowAnimationComponent->StopFollowing();
 	}
 
 	OnPickupDisabled();
@@ -121,14 +114,4 @@ bool APickupBase::ActivatePickupEffect()
 	}
 
 	return false;
-}
-
-void APickupBase::SetAnimationTargetLocation() const
-{
-	if (!IsValid(TargetActor))
-	{
-		return;
-	}
-
-	EaseAnimationComponent->SetTargetLocation(TargetActor->GetActorLocation());
 }

@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PickupBase.generated.h"
 
-class UEaseAnimationComponent;
+class UFollowAnimationComponent;
 class UPickupEffectsComponent;
 class UPickupEffectType;
 
@@ -54,7 +54,7 @@ protected:
 	USceneComponent* PickupRootComponent = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
-	UEaseAnimationComponent* EaseAnimationComponent = nullptr;
+	UFollowAnimationComponent* FollowAnimationComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
 	UPickupEffectsComponent* PickupEffectsComponent = nullptr;
@@ -111,6 +111,4 @@ private:
 	AActor* TargetActor = nullptr;
 
 	bool ActivatePickupEffect();
-
-	void SetAnimationTargetLocation() const;
 };
