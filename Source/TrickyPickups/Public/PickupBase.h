@@ -7,6 +7,7 @@
 #include "PickupBase.generated.h"
 
 class UEaseAnimationComponent;
+class UPickupEffectsComponent;
 class UPickupEffectType;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPickupActivatedSignature);
@@ -23,8 +24,8 @@ public:
 	APickupBase();
 
 protected:
-	virtual void BeginPlay() override;
-
+	virtual void OnConstruction(const FTransform& Transform) override;
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 
@@ -55,18 +56,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
 	UEaseAnimationComponent* EaseAnimationComponent = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
+	UPickupEffectsComponent* PickupEffectsComponent = nullptr;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pickup", meta=(AllowPrivateAccess))
 	TSubclassOf<UPickupEffectType> MainEffectType = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pickup", meta=(AllowPrivateAccess))
 	TArray<TSubclassOf<UPickupEffectType>> SecondaryEffectsTypes;
 
-	UPROPERTY(BlueprintReadOnly, Category="Pickup")
-	UPickupEffectType* MainEffect = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, Category="Pickup")
-	TArray<UPickupEffectType*> SecondaryEffects;
-	
 	/**
 	 * If true the pickup actor will destroy on activation, else it'll be disabled and hidden in game.
 	 */
@@ -115,8 +113,4 @@ private:
 	bool ActivatePickupEffect();
 
 	void SetAnimationTargetLocation() const;
-
-	bool ActivateMainEffect() const;
-
-	void ActivateSecondaryEffects();
 };

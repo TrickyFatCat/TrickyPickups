@@ -3,8 +3,7 @@
 #include "PickupBase.h"
 
 #include "EaseAnimationComponent.h"
-#include "PickupEffectType.h"
-
+#include "PickupEffectsComponent.h"
 
 APickupBase::APickupBase()
 {
@@ -13,34 +12,25 @@ APickupBase::APickupBase()
 	PickupRootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
 	SetRootComponent(PickupRootComponent);
 
+	PickupEffectsComponent = CreateDefaultSubobject<UPickupEffectsComponent>("PickupEffects");
+
 	EaseAnimationComponent = CreateDefaultSubobject<UEaseAnimationComponent>("EaseAnimation");
 	EaseAnimationComponent->Stop();
 }
 
-void APickupBase::BeginPlay()
+void APickupBase::OnConstruction(const FTransform& Transform)
 {
-	Super::BeginPlay();
+	Super::OnConstruction(Transform);
 
-	EaseAnimationComponent->Stop();
-
-	if (MainEffectType)
+	if (PickupEffectsComponent)
 	{
-		MainEffect = NewObject<UPickupEffectType>(this, MainEffectType);
+		PickupEffectsComponent->SetMainEffectType(MainEffectType);
+		PickupEffectsComponent->SetSecondaryEffectsTypes(SecondaryEffectsTypes);
 	}
 
-	if (SecondaryEffectsTypes.Num() > 0)
+	if (EaseAnimationComponent)
 	{
-		for (const TSubclassOf<UPickupEffectType>& Effect : SecondaryEffectsTypes)
-		{
-			UPickupEffectType* SecondaryEffect = NewObject<UPickupEffectType>(this, Effect);
-
-			if (!SecondaryEffect)
-			{
-				continue;
-			}
-
-			SecondaryEffects.Emplace(SecondaryEffect);
-		}
+		EaseAnimationComponent->Stop();
 	}
 }
 
@@ -113,10 +103,8 @@ void APickupBase::DisablePickup()
 
 bool APickupBase::ActivatePickupEffect()
 {
-	if (ActivateMainEffect())
+	if (PickupEffectsComponent->ActivatePickupEffect(TargetActor))
 	{
-		ActivateSecondaryEffects();
-
 		OnPickupEffectActivated(TargetActor);
 		OnPickupActivated.Broadcast();
 
@@ -143,27 +131,4 @@ void APickupBase::SetAnimationTargetLocation() const
 	}
 
 	EaseAnimationComponent->SetTargetLocation(TargetActor->GetActorLocation());
-}
-
-bool APickupBase::ActivateMainEffect() const
-{
-	if (!IsValid(MainEffect))
-	{
-		return false;
-	}
-
-	return MainEffect->ActivateEffect(TargetActor);
-}
-
-void APickupBase::ActivateSecondaryEffects()
-{
-	for (const auto& Effect : SecondaryEffects)
-	{
-		if (!IsValid(Effect))
-		{
-			continue;
-		}
-
-		Effect->ActivateEffect(TargetActor);
-	}
 }
