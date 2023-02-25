@@ -9,9 +9,9 @@
 class UPickupEffectType;
 class AActor;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainEffectActivatedSignature, TSubclassOf<UPickupEffectType>, PickupEffectType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainEffectActivatedSignature, UPickupEffectType*, PickupEffect);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSecondaryEffectActivatedSignature, TSubclassOf<UPickupEffectType>, PickupEffectType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSecondaryEffectActivatedSignature, UPickupEffectType*, PickupEffect);
 
 /**
  * A component which handles activating pickup effects.

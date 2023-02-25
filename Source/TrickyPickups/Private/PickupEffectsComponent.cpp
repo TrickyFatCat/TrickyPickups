@@ -49,7 +49,7 @@ bool UPickupEffectsComponent::ActivatePickupEffect(AActor* OtherActor)
 
 	if (Result)
 	{
-		OnMainEffectActivated.Broadcast(MainEffect->StaticClass());
+		OnMainEffectActivated.Broadcast(MainEffect);
 	}
 
 	if (SecondaryEffects.Num() > 0 && Result)
@@ -63,7 +63,7 @@ bool UPickupEffectsComponent::ActivatePickupEffect(AActor* OtherActor)
 			
 			if (Effect->ActivateEffect(OtherActor))
 			{
-				OnSecondaryEffectActivated.Broadcast(Effect->StaticClass());
+				OnSecondaryEffectActivated.Broadcast(Effect);
 			}
 		}
 	}
