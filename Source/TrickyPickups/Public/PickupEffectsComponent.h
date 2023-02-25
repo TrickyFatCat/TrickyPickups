@@ -42,7 +42,7 @@ public:
 	 *First it tries to activate main effect, if true, it activates secondary effects.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Pickup")
-	bool ActivatePickupEffect(AActor* OtherActor);
+	bool ActivatePickupEffects(AActor* OtherActor);
 	
 	UFUNCTION(BlueprintSetter, Category="Pickup")
 	void SetMainEffectType(TSubclassOf<UPickupEffectType> Value);

@@ -96,7 +96,7 @@ void APickupBase::DisablePickup()
 
 bool APickupBase::ActivatePickupEffect()
 {
-	if (PickupEffectsComponent->ActivatePickupEffect(TargetActor))
+	if (PickupEffectsComponent->ActivatePickupEffects(TargetActor))
 	{
 		OnPickupEffectActivated(TargetActor);
 		OnPickupActivated.Broadcast();

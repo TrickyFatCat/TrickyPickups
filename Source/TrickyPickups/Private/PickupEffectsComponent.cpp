@@ -38,7 +38,7 @@ void UPickupEffectsComponent::InitializeComponent()
 	}
 }
 
-bool UPickupEffectsComponent::ActivatePickupEffect(AActor* OtherActor)
+bool UPickupEffectsComponent::ActivatePickupEffects(AActor* OtherActor)
 {
 	if (!IsValid(OtherActor) || !IsValid(MainEffect))
 	{
