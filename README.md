@@ -14,7 +14,7 @@ Install them before installing this plugin.
 ## Installation
 
 The plugin can be used in both C++ and Blueprint projects.
-[README.md](README.md)
+
 ### Blueprint projects
 
 **At the moment, the package is compatible only with Unreal Engine 4.**
@@ -36,9 +36,40 @@ In this case the plugin can be used for any blueprint project.
 
 The plugin contains actors:
 
-1. PickupBase;
-2. PickupNormal;
-3. PickupInteractive;
+1. PickupEffectType;
+2. PickupEffectsComponent;
+3. PickupBase;
+4. PickupNormal;
+5. PickupInteractive;
+
+### PickupEffectType
+
+A class for creation of pickup effects.
+
+#### Functions
+
+1. `ActivatePickupEffect` - override this function to implement pickup effect logic;
+
+### PickupEffectsComponent
+
+A component which handles pickup effects activation.
+
+#### Variables
+
+1. `MainEffectType` - the class of the main pickup effect;
+2. `SecondayEffectsTypes` - an array of secondary effects classes;
+
+#### Functions
+
+1. `ActivatePickupEffects` - activates pickup effects:
+   1. First it tries to activate Main Effect;
+   2. If it was successful, it activates secondary effects;
+
+#### Delegates
+
+1. `OnMainEffectActivated` - called when the main pickup effect successfully activated;
+2. `OnSecondaryEffectActivated` - called when the secondary effect successfully activated;
+
 
 ### PickupBase
 
@@ -46,11 +77,12 @@ A base pickup class which contains the main logic.
 
 #### Variables
 
-1. `DestroyOnActivation` - if true the pickup actor will destroy on activation, else it'll be disabled and hidden in
-   game;
-2. `InterpolateToTarget` - if true the actor will be interpolated to the target using EaseAnimationComponent from [**
+1. `MainEffectType` - the class of the main pickup effect;
+2. `SecondayEffectsTypes` - an array of secondary effects classes;
+3. `DestroyOnActivation` - if true the pickup actor will be destroyed on activation, else it'll be disabled and hidden in game;
+4. `InterpolateToTarget` - if true the actor will be interpolated to the target using EaseAnimationComponent from [**
    TrickyAnimationComponents**](https://github.com/TrickyFatCat/TrickyAnimationComponents);
-3. `ActivationDistance` - determines the distance from the target actor the `ActivatePickup` function will be called.
+5. `ActivationDistance` - determines the distance from the target actor the `ActivatePickup` function will be called.
    Worked only if `InterpolateToTarget == true`;
 
 #### Functions
@@ -58,8 +90,6 @@ A base pickup class which contains the main logic.
 1. `ActivatePickup` - activates the pickup logic. Call this function if you want to activate the pickup in your custom
    pickup class;
 2. `EnablePickup` - enables pickup if it was disabled when `DestroyOnActivation == false`;
-3. `PickupEffect` - a function which is called to activate the actual pickup effect. Override it to implement pickup
-   effect;
 
 #### Events
 
