@@ -13,6 +13,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainEffectActivatedSignature, TSu
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSecondaryEffectActivatedSignature, TSubclassOf<UPickupEffectType>, PickupEffectType);
 
+/**
+ * A component which handles activating pickup effects.
+ */
 UCLASS(ClassGroup=(TrickyPickups), meta=(BlueprintSpawnableComponent))
 class TRICKYPICKUPS_API UPickupEffectsComponent : public UActorComponent
 {
@@ -25,12 +28,19 @@ protected:
 	virtual void InitializeComponent() override;
 
 public:
+	/**Called when the main effect were activated.*/
 	UPROPERTY(BlueprintAssignable, Category="Pickup")
 	FOnMainEffectActivatedSignature OnMainEffectActivated;
 
+	/**Called when the secondary effect were activated.*/
 	UPROPERTY(BlueprintAssignable, Category="Pickup")
 	FOnSecondaryEffectActivatedSignature OnSecondaryEffectActivated;
-	
+
+	/**
+	 *Activates pickup effects.
+	 *
+	 *First it tries to activate main effect, if true, it activates secondary effects.
+	 */
 	UFUNCTION(BlueprintCallable, Category="Pickup")
 	bool ActivatePickupEffect(AActor* OtherActor);
 	
@@ -48,12 +58,14 @@ public:
 	
 
 protected:
+	/**Main effect type.*/
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetMainEffectType,
 		BlueprintSetter=SetMainEffectType,
 		Category="Pickup")
 	TSubclassOf<UPickupEffectType> MainEffectType = nullptr;
 
+	/**List of secondary effects types.*/
 	UPROPERTY(EditDefaultsOnly, Category="Pickup")
 	TArray<TSubclassOf<UPickupEffectType>> SecondaryEffectsTypes;
 
