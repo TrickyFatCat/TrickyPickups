@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 6,
-	"VersionName": "2.0a",
+	"Version": 7,
+	"VersionName": "2.0",
 	"FriendlyName": "TrickyPickups",
 	"Description": "A plugin with different base pickup classes",
 	"Category": "TrickyPrototyping",
