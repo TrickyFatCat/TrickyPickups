@@ -51,13 +51,13 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
-	USceneComponent* PickupRootComponent = nullptr;
+	TObjectPtr<USceneComponent> PickupRootComponent = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
-	UFollowAnimationComponent* FollowAnimationComponent = nullptr;
+	TObjectPtr<UFollowAnimationComponent> FollowAnimationComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess))
-	UPickupEffectsComponent* PickupEffectsComponent = nullptr;
+	TObjectPtr<UPickupEffectsComponent> PickupEffectsComponent = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pickup", meta=(AllowPrivateAccess))
 	TSubclassOf<UPickupEffectType> MainEffectType = nullptr;

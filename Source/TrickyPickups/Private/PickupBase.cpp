@@ -1,5 +1,6 @@
 ﻿// MIT License Copyright. Created by Artyom "Tricky Fat Cat" Volkov
 
+
 #include "PickupBase.h"
 
 #include "FollowAnimationComponent.h"
@@ -10,7 +11,7 @@ APickupBase::APickupBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PickupRootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
-	SetRootComponent(PickupRootComponent);
+	SetRootComponent(ToRawPtr(PickupRootComponent));
 
 	PickupEffectsComponent = CreateDefaultSubobject<UPickupEffectsComponent>("PickupEffects");
 

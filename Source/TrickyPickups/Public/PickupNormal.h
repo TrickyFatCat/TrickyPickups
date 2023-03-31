@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	USphereComponent* ActivationTrigger = nullptr;
+	TObjectPtr<USphereComponent> ActivationTrigger = nullptr;
 
 private:
 	UFUNCTION()

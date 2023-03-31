@@ -34,7 +34,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
-	USphereInteractionComponent* InteractionTriggerComponent = nullptr;
+	TObjectPtr<USphereInteractionComponent> InteractionTriggerComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter=GetInteractionData, BlueprintSetter=SetInteractionData,
 		Category="Pickup")
