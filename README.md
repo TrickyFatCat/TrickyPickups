@@ -1,5 +1,7 @@
 # TrickyPickups
 
+This plugin is no more in development, you can use a new version [**here**](https://github.com/TrickyFatCat/TrickyGameplayObjects/)
+
 A plugin with different base pickup classes
 
 ## Dependencies
